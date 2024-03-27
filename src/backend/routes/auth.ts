@@ -1,9 +1,12 @@
-const router = require("express").Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { validationResult, checkSchema } = require("express-validator");
+import { Router, Request, Response } from 'express';
+import { validationResult, checkSchema } from "express-validator";
 
-const UserDAO = require("../../database/models/User");
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+import { User as UserDAO } from "../../database/models";
+
+const router = Router();
 
 const bodyMiddleware = checkSchema({
   email: {
@@ -23,7 +26,7 @@ const bodyMiddleware = checkSchema({
   },
 });
 
-router.post("/register", bodyMiddleware, async (req, res) => {
+router.post("/register", bodyMiddleware, async (req: Request, res: Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -47,7 +50,7 @@ router.post("/register", bodyMiddleware, async (req, res) => {
   return res.json(user);
 });
 
-router.post("/login", bodyMiddleware, async (req, res, next) => {
+router.post("/login", bodyMiddleware, async (req: Request, res: Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -68,7 +71,7 @@ router.post("/login", bodyMiddleware, async (req, res, next) => {
     return res.status(400).json({ message: "Password or email is incorrect" });
   }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || '');
 
   return res.json(token);
 });

@@ -1,6 +1,10 @@
+import { Request, Response } from 'express';
+
+import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "../utils";
+
 export const errorHandlerMiddleware = () => {
-  return (err, req, res) => {
-    const { log } = req;
+  return (err: unknown, _: Request, res: Response) => {
+
     if (err instanceof ValidationError) {
       return res
         .status(400)
@@ -23,9 +27,6 @@ export const errorHandlerMiddleware = () => {
       return res.status(404).json({ name: err.name, message: err.message });
     }
 
-    if (log) {
-      log.error("internal server error", err);
-    }
     res.status(500).end();
   };
 };

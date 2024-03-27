@@ -1,9 +1,9 @@
-require("dotenv").config();
+import { sequelize } from "./database";
+import { app } from './backend/app';
 
-const app = require("./backend/app");
-const sequelize = require("./database");
+import { config } from './config';
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.port;
 
 const connectDatabase = async () => {
   try {
@@ -12,7 +12,7 @@ const connectDatabase = async () => {
     console.log("Successful connection to the database!");
   } catch (error) {
     console.log("Unable to connect to the database:");
-    console.log(error.message);
+    console.error(error);
     process.exit(1);
   }
 };
@@ -22,4 +22,4 @@ const init = async () => {
   app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));
 };
 
-init(console.log(require("./hui")));
+init();
