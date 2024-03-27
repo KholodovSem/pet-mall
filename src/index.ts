@@ -1,7 +1,7 @@
-import { sequelize } from "./database/models";
-import { app } from './backend/app';
+import { sequelize } from "./database";
+import { app } from "./backend/app";
 
-import { config } from './config';
+import { config } from "./config";
 
 const PORT = config.port;
 

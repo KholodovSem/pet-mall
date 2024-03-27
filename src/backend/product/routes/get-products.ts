@@ -1,25 +1,56 @@
 import { type Handler } from "express";
+import { Op, WhereOptions } from "sequelize";
 
-import { Product, Tag } from '../../../database/models';
+import { Product, type ProductAttributes, Tag, type TagAttributes } from "../../../database/models";
 
 export const getProducts: Handler = async (req, res) => {
-    const query = req.query as Record<string, string | undefined>;
-    const page = parseInt(query.page || '');
-    const limit = parseInt(query.limit || '') || undefined;
-    const offset = page && limit ? (page - 1) * limit : undefined;
+  const query = req.query as Record<string, string | undefined>;
+  const page = parseInt(query.page || "");
+  const limit = parseInt(query.limit || "") || undefined;
+  const offset = page && limit ? (page - 1) * limit : undefined;
 
-    //TODO: Filtering by: (company, petType, tags)
+  const { company, purpose, tags } = query;
 
-    const { company, petType, tags } = query;
+  const tagNames = tags?.split(",").map((tag) => tag.toLowerCase().trim());
 
-    const products = await Product.findAll({
-        include: {
-            model: Tag,
+  const productWhere: WhereOptions<ProductAttributes>[] = [];
+  const tagWhere: WhereOptions<TagAttributes> = {};
+
+  if (company || purpose) {
+    if (company) {
+      productWhere.push({
+        company: {
+          [Op.iLike]: `${company.trim()}`,
         },
-        where: { company, petType },
-        limit: limit,
-        offset: offset
-    })
+      });
+    }
 
-    return res.json(products);
-}
+    if (purpose) {
+      productWhere.push({
+        purpose: {
+          [Op.iLike]: `${purpose.trim()}`,
+        },
+      });
+    }
+  }
+
+  if (tagNames) {
+    tagWhere.name = {
+      [Op.in]: tagNames,
+    };
+  }
+
+  const products = await Product.findAll({
+    include: {
+      model: Tag,
+      where: tagWhere,
+    },
+    where: {
+      [Op.and]: productWhere,
+    },
+    limit: limit,
+    offset: offset,
+  });
+
+  return res.json(products);
+};

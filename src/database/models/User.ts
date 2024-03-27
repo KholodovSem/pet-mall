@@ -1,14 +1,14 @@
 import { Model, DataTypes, type Optional } from "sequelize";
 
-import { sequelize } from "../models";
+import { sequelize } from "../";
 
 type UserAttributes = {
   id: number;
   email: string;
   password: string;
-}
+};
 
-type UserCreationAttributes = Optional<UserAttributes, 'id'>
+type UserCreationAttributes = Optional<UserAttributes, "id">;
 
 export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare id: number;
@@ -16,14 +16,13 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare password: string;
 }
 
-
 User.init(
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
