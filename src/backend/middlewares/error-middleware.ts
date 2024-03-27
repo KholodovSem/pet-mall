@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "../utils";
 
 export const errorHandlerMiddleware = () => {
+  console.log('Inside error middleware:');
+
   return (err: unknown, _: Request, res: Response) => {
 
     if (err instanceof ValidationError) {

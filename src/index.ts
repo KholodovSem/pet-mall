@@ -1,4 +1,4 @@
-import { sequelize } from "./database";
+import { sequelize } from "./database/models";
 import { app } from './backend/app';
 
 import { config } from './config';
@@ -8,7 +8,7 @@ const PORT = config.port;
 const connectDatabase = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ force: true });
+    await sequelize.sync();
     console.log("Successful connection to the database!");
   } catch (error) {
     console.log("Unable to connect to the database:");

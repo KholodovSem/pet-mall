@@ -1,6 +1,6 @@
 import { Model, DataTypes, type Optional } from "sequelize";
 
-import { sequelize } from "../index";
+import { sequelize } from "../models";
 
 type UserAttributes = {
   id: number;
@@ -23,6 +23,7 @@ User.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
