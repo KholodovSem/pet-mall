@@ -17,9 +17,9 @@ export class Tag extends Model<TagAttributes, TagCreationAttributes> {
 Tag.init(
   {
     id: {
+      primaryKey: true,
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
       allowNull: false,
     },
     name: {

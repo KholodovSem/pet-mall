@@ -1,18 +1,18 @@
 import { DataTypes, Model } from "sequelize";
 
-import { sequelize } from "../";
+import { sequelize } from "..";
 
 type ProductTagsAttributes = {
   productId: number;
   tagId: number;
 };
 
-export class ProductTags extends Model<ProductTagsAttributes> {
+export class ProductTag extends Model<ProductTagsAttributes> {
   declare productId: number;
   declare tagId: number;
 }
 
-ProductTags.init(
+ProductTag.init(
   {
     productId: {
       type: DataTypes.INTEGER,
@@ -25,5 +25,5 @@ ProductTags.init(
       field: "tag_id",
     },
   },
-  { sequelize, tableName: "product_tags" }
+  { sequelize, modelName: "product_tag", tableName: "products_tags" }
 );

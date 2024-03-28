@@ -19,9 +19,9 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
 Product.init(
   {
     id: {
+      primaryKey: true,
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
       allowNull: false,
     },
     company: {

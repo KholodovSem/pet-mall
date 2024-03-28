@@ -19,9 +19,9 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
 User.init(
   {
     id: {
+      primaryKey: true,
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
       allowNull: false,
     },
     email: {
