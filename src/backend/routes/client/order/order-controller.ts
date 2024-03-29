@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { checkSchema, query } from "express-validator";
 
-import { authMiddleware, routeHandlerMiddleware } from "../middlewares";
+import { authMiddleware, routeHandlerMiddleware } from "../../../middlewares";
 
 import { createOrder, getOrders, declineOrder } from "./routes";
 
-export const router = Router();
+export const orderController = Router();
 
 /* 
     Body example: 
@@ -41,8 +41,8 @@ const createOrderSchema = checkSchema({
     },
 });
 
-const orderChecker = query('orderId', 'Order id must be provided in query params')
+const orderChecker = query("orderId", "Order id must be provided in query params");
 
-router.get("/", authMiddleware, routeHandlerMiddleware(getOrders));
-router.post("/", authMiddleware, createOrderSchema, routeHandlerMiddleware(createOrder));
-router.post("/decline/:id", authMiddleware, orderChecker, routeHandlerMiddleware(declineOrder));
+orderController.get("/", authMiddleware, routeHandlerMiddleware(getOrders));
+orderController.post("/", authMiddleware, createOrderSchema, routeHandlerMiddleware(createOrder));
+orderController.post("/decline/:id", authMiddleware, orderChecker, routeHandlerMiddleware(declineOrder));

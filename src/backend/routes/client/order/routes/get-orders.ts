@@ -1,7 +1,7 @@
 import { type Handler } from "express";
 import { Op } from "sequelize";
 
-import { Order } from "../../../database/models";
+import { Order } from "../../../../../database/models";
 
 export const getOrders: Handler = async (req, res) => {
     const orders = await Order.findAll({
@@ -9,7 +9,7 @@ export const getOrders: Handler = async (req, res) => {
             [Op.and]: {
                 userId: {
                     [Op.eq]: req.userId,
-                }
+                },
             },
         },
     });

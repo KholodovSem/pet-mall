@@ -5,3 +5,4 @@ export * from "./Order";
 export * from "./OrderProduct";
 export * from "./User";
 export * from "./relations";
+export * from "./CRMUser";

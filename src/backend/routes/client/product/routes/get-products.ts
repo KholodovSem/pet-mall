@@ -1,7 +1,7 @@
 import { type Handler } from "express";
 import { Op, WhereOptions } from "sequelize";
 
-import { Product, type ProductAttributes, Tag, type TagAttributes } from "../../../database/models";
+import { Product, type ProductAttributes, Tag, type TagAttributes } from "../../../../../database/models";
 
 export const getProducts: Handler = async (req, res) => {
     const query = req.query as Record<string, string | undefined>;
@@ -16,9 +16,8 @@ export const getProducts: Handler = async (req, res) => {
     const productWhere: WhereOptions<ProductAttributes>[] = [];
     const tagWhere: WhereOptions<TagAttributes> = {};
 
-    console.log('Product where:', productWhere);
-    console.log('Tag where:', tagWhere);
-
+    console.log("Product where:", productWhere);
+    console.log("Tag where:", tagWhere);
 
     if (company || purpose) {
         if (company) {

@@ -1,13 +1,6 @@
-import { Router } from "express";
 import { checkSchema } from "express-validator";
 
-import { routeHandlerMiddleware } from "../middlewares";
-
-import { loginUser, registerUser } from "./routes";
-
-export const router = Router();
-
-const bodyMiddleware = checkSchema({
+export const credentialBodyChecker = checkSchema({
     email: {
         isEmail: {
             errorMessage: "Must be a valid e-mail address",
@@ -26,6 +19,3 @@ const bodyMiddleware = checkSchema({
         },
     },
 });
-
-router.post("/register", bodyMiddleware, routeHandlerMiddleware(registerUser));
-router.post("/login", bodyMiddleware, routeHandlerMiddleware(loginUser));
