@@ -8,7 +8,7 @@ export class NotFoundError extends Error {
 export class ValidationError extends Error {
     public errors: string[] = [];
     constructor(errors: string[]) {
-        super('validation error');
+        super("validation error");
         this.name = this.constructor.name;
         this.errors = errors;
     }

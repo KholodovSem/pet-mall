@@ -7,4 +7,3 @@ import { getProducts } from "./routes";
 export const router = Router();
 
 router.get("/", routeHandlerMiddleware(getProducts));
-// router.post("/login", bodyMiddleware, routeHandlerMiddleware(loginUser));

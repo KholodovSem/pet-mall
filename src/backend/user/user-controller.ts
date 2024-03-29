@@ -3,7 +3,7 @@ import { checkSchema } from "express-validator";
 
 import { routeHandlerMiddleware } from "../middlewares";
 
-import { loginUser, registerUser } from './routes';
+import { loginUser, registerUser } from "./routes";
 
 export const router = Router();
 

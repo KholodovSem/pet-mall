@@ -1,58 +1,57 @@
-import { Handler } from 'express';
+import { Handler } from "express";
 import { validationResult } from "express-validator";
 
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-import { User as UserDAO } from "../../../database/models/User";
+import { User } from "../../../database/models/User";
 
-import { BadRequestError, NotFoundError, ValidationError } from '../../utils'
+import { BadRequestError, NotFoundError, ValidationError } from "../../utils";
 
 export const registerUser: Handler = async (req, res) => {
-  const errors = validationResult(req);
+    const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    throw new ValidationError(errors.array().map((e) => e.msg));
-  }
+    if (!errors.isEmpty()) {
+        throw new ValidationError(errors.array().map((e) => e.msg));
+    }
 
-  const { email, password } = req.body;
+    const { email, password } = req.body;
 
-  const isUserExist = await UserDAO.findOne({ where: { email } });
+    const isUserExist = await User.findOne({ where: { email } });
 
-  if (isUserExist) {
-    throw new BadRequestError(`User with ${email} already exist`);
-  }
+    if (isUserExist) {
+        throw new BadRequestError(`User with ${email} already exist`);
+    }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await UserDAO.create({ email, password: hashedPassword });
+    await User.create({ email, password: hashedPassword });
 
-  return res.json(user);
+    return res.status(201);
 };
 
 export const loginUser: Handler = async (req, res) => {
-  const errors = validationResult(req);
+    const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    throw new ValidationError(errors.array().map((e) => e.msg));
-  }
+    if (!errors.isEmpty()) {
+        throw new ValidationError(errors.array().map((e) => e.msg));
+    }
 
-  const { email, password } = req.body;
+    const { email, password } = req.body;
 
-  const user = await UserDAO.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
 
-  if (!user) {
-    throw new NotFoundError(`User with ${email} already exist`);
-  }
+    if (!user) {
+        throw new NotFoundError(`User with ${email} already exist`);
+    }
 
-  const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = await bcrypt.compare(user.password, password);
 
-  if (isPasswordMatch) {
-    throw new BadRequestError("Password or email is incorrect");
-  }
+    if (isPasswordMatch) {
+        throw new BadRequestError("Password or email is incorrect");
+    }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || '');
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || "");
 
-  return res.json(token);
+    return res.json({ token });
 };
-
