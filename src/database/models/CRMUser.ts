@@ -1,6 +1,8 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Model, Optional, CreationOptional, NonAttribute } from "sequelize";
 
-import { sequelize } from "..";
+import { sequelize } from "../";
+
+import { Role } from "./Role";
 
 type CRMUserAttributes = {
     id: number;
@@ -11,9 +13,11 @@ type CRMUserAttributes = {
 type CreationCRMUserAttributes = Optional<CRMUserAttributes, "id">;
 
 export class CRMUser extends Model<CRMUserAttributes, CreationCRMUserAttributes> {
-    declare id: number;
+    declare id: CreationOptional<number>;
     declare email: string;
     declare password: string;
+
+    declare roles: NonAttribute<Role[]>;
 }
 
 CRMUser.init(
@@ -34,5 +38,5 @@ CRMUser.init(
             allowNull: false,
         },
     },
-    { sequelize }
+    { sequelize, tableName: "crm_users", modelName: "crm_user" }
 );

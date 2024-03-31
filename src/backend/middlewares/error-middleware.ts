@@ -1,10 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 
-import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "../utils";
+import {
+    BadRequestError,
+    ForbiddenError,
+    InternalError,
+    NotFoundError,
+    UnauthorizedError,
+    ValidationError,
+} from "../utils";
 
 export const errorHandlerMiddleware = (err: unknown, request: Request, res: Response, next: NextFunction) => {
+    console.log("Error", err);
     if (err instanceof ValidationError) {
-        console.log('Validation');
+        console.log("Validation");
 
         return res.status(400).json({ name: err.name, message: err.message, errors: err.errors });
     }
@@ -27,4 +35,3 @@ export const errorHandlerMiddleware = (err: unknown, request: Request, res: Resp
 
     res.status(500).end();
 };
-

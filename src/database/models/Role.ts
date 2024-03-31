@@ -2,21 +2,21 @@ import { DataTypes, Model, Optional } from "sequelize";
 
 import { sequelize } from "../";
 
-export enum UserRole {
+export enum PossibleRole {
     ADMIN = "admin",
     MANAGER = "manager",
 }
 
 type RoleAttributes = {
     id: number;
-    role: UserRole;
+    name: PossibleRole;
 };
 
 type CreationRoleAttributes = Optional<RoleAttributes, "id">;
 
 export class Role extends Model<RoleAttributes, CreationRoleAttributes> {
     declare id: number;
-    declare role: UserRole;
+    declare name: PossibleRole;
 }
 
 Role.init(
@@ -27,11 +27,12 @@ Role.init(
             autoIncrement: true,
             allowNull: false,
         },
-        role: {
+        name: {
             type: DataTypes.ENUM,
-            values: Object.values(UserRole),
+            values: Object.values(PossibleRole),
             allowNull: false,
+            unique: true,
         },
     },
-    { sequelize }
+    { sequelize, tableName: "roles", modelName: "role" }
 );

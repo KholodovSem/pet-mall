@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 
-import { CRMUser, CRMUserRole } from "../../../../../database/models";
+import { CRMUser, PossibleRole, Role, UserRole } from "../../../../../database/models";
 import { BadRequestError, ValidationError } from "../../../../utils";
 
 export const register: Handler = async (req, res) => {
@@ -27,9 +27,24 @@ export const register: Handler = async (req, res) => {
         throw new BadRequestError(`User with email: ${email} already exist`);
     }
 
+    const role = await Role.findOne({
+        where: {
+            name: {
+                [Op.eq]: PossibleRole.MANAGER,
+            },
+        },
+    });
+
+    //TODO: Is it right way to handle this error type
+    if (!role) {
+        return res.status(502).json({ message: "There is no such role in the database" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await CRMUser.create({ email, password: hashedPassword, role: CRMUserRole.MANAGER });
+    const user = await CRMUser.create({ email, password: hashedPassword });
+
+    await UserRole.create({ user_id: user.id, role_id: role.id });
 
     res.status(201).json({ message: "User successfully created" });
 };

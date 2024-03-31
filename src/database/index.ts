@@ -7,5 +7,5 @@ export const sequelize = new Sequelize({
     host: "localhost",
     username: "postgres",
     password: config.database.password,
-    logging: false,
+    // logging: false,
 });

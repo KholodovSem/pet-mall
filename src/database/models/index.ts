@@ -6,3 +6,5 @@ export * from "./OrderProduct";
 export * from "./User";
 export * from "./relations";
 export * from "./CRMUser";
+export * from "./Role";
+export * from "./UserRole";

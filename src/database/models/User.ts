@@ -34,5 +34,5 @@ User.init(
             allowNull: false,
         },
     },
-    { sequelize, tableName: "users" }
+    { sequelize, tableName: "users", modelName: "user" }
 );

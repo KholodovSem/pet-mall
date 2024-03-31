@@ -57,8 +57,8 @@ export const createOrder: Handler = async (req, res) => {
 
     await OrderProduct.bulkCreate(
         databaseProducts.map((product) => ({
-            productId: product.id,
-            orderId: order.id,
+            product_id: product.id,
+            order_id: order.id,
         }))
     );
 

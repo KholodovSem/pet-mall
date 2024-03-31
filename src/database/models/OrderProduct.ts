@@ -3,23 +3,23 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "..";
 
 type OrderProductsAttributes = {
-    productId: number;
-    orderId: number;
+    product_id: number;
+    order_id: number;
 };
 
 export class OrderProduct extends Model<OrderProductsAttributes> {
-    declare productId: number;
-    declare orderId: number;
+    declare product_id: number;
+    declare order_id: number;
 }
 
 OrderProduct.init(
     {
-        productId: {
+        product_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             field: "product_id",
         },
-        orderId: {
+        order_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             field: "order_id",
