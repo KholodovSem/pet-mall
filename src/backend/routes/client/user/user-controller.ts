@@ -5,9 +5,17 @@ import { routeHandlerMiddleware } from "../../../middlewares";
 
 import { loginUser, registerUser } from "./routes";
 
-import { credentialBodyChecker } from "../../../utils";
+import { credentialsChecker } from "../../../utils";
 
 export const userController = Router();
 
-userController.post("/register", credentialBodyChecker, routeHandlerMiddleware(registerUser));
-userController.post("/login", credentialBodyChecker, routeHandlerMiddleware(loginUser));
+userController.post(
+    "/register",
+    credentialsChecker,
+    routeHandlerMiddleware(registerUser)
+);
+userController.post(
+    "/login",
+    credentialsChecker,
+    routeHandlerMiddleware(loginUser)
+);

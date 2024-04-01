@@ -1,6 +1,6 @@
 import { checkSchema } from "express-validator";
 
-export const credentialBodyChecker = checkSchema({
+export const credentialsChecker = checkSchema({
     email: {
         isEmail: {
             errorMessage: "Must be a valid e-mail address",

@@ -34,5 +34,5 @@ export const registerUser: Handler = async (req, res) => {
 
     await User.create({ email, password: hashedPassword });
 
-    return res.status(201);
+    return res.status(201).json({ message: "User successful created" });
 };

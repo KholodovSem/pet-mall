@@ -12,7 +12,10 @@ export const authMiddleware: Handler = (req, _, next) => {
 
         const [__, token] = req.headers.authorization.split(" ");
 
-        const decodedToken = jwt.verify(token, config.jwtSecret) as JwtPayload & { userId: number };
+        const decodedToken = jwt.verify(
+            token,
+            config.jwtSecret
+        ) as JwtPayload & { userId: number };
 
         req.userId = decodedToken.userId;
 
@@ -20,5 +23,4 @@ export const authMiddleware: Handler = (req, _, next) => {
     } catch (error) {
         next(error);
     }
-
 };

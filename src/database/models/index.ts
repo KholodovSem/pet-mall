@@ -8,3 +8,5 @@ export * from "./relations";
 export * from "./CRMUser";
 export * from "./Role";
 export * from "./UserRole";
+export * from "./Purpose";
+export * from "./Manufacturer";

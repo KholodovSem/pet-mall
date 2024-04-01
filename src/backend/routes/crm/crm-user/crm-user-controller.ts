@@ -2,10 +2,24 @@ import { Router } from "express";
 
 import { register, login } from "./routes";
 
-import { routeHandlerMiddleware } from "../../../middlewares";
-import { credentialBodyChecker } from "../../../utils";
+import { PossibleRole } from "../../../../database/models";
+
+import {
+    routeHandlerMiddleware,
+    permissionMiddleware,
+} from "../../../middlewares";
+import { credentialsChecker } from "../../../utils";
 
 export const crmUserController = Router();
 
-crmUserController.post("/register", credentialBodyChecker, routeHandlerMiddleware(register));
-crmUserController.post("/login", credentialBodyChecker, routeHandlerMiddleware(login));
+crmUserController.post(
+    "/register",
+    credentialsChecker,
+    permissionMiddleware(PossibleRole.ADMIN),
+    routeHandlerMiddleware(register)
+);
+crmUserController.post(
+    "/login",
+    credentialsChecker,
+    routeHandlerMiddleware(login)
+);

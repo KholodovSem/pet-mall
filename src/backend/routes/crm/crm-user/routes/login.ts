@@ -6,7 +6,11 @@ import jwt from "jsonwebtoken";
 
 import { CRMUser } from "../../../../../database/models";
 import { config } from "../../../../../config";
-import { BadRequestError, NotFoundError, ValidationError } from "../../../../utils";
+import {
+    BadRequestError,
+    NotFoundError,
+    ValidationError,
+} from "../../../../utils";
 
 export const login: Handler = async (req, res) => {
     const errors = validationResult(req);

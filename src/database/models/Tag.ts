@@ -30,3 +30,5 @@ Tag.init(
     },
     { sequelize, tableName: "tags", modelName: "tag" }
 );
+
+//TODO: afterDestroy tag?

@@ -7,11 +7,14 @@ import { config } from "./config";
 
 const PORT = config.port;
 
+//TODO: Seed db fn in separate file.
+//TODO: Ask Maks about similar handlers in routes (manufacturer, tag, purpose).
+
 const connectDatabase = async () => {
     try {
         await sequelize.authenticate();
 
-        await sequelize.sync();
+        await sequelize.sync({ force: true });
 
         await Role.bulkCreate(
             Object.values(PossibleRole).map((role) => ({

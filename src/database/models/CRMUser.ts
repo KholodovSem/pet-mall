@@ -1,4 +1,10 @@
-import { DataTypes, Model, Optional, CreationOptional, NonAttribute } from "sequelize";
+import {
+    DataTypes,
+    Model,
+    Optional,
+    CreationOptional,
+    NonAttribute,
+} from "sequelize";
 
 import { sequelize } from "../";
 
@@ -12,7 +18,10 @@ type CRMUserAttributes = {
 
 type CreationCRMUserAttributes = Optional<CRMUserAttributes, "id">;
 
-export class CRMUser extends Model<CRMUserAttributes, CreationCRMUserAttributes> {
+export class CRMUser extends Model<
+    CRMUserAttributes,
+    CreationCRMUserAttributes
+> {
     declare id: CreationOptional<number>;
     declare email: string;
     declare password: string;

@@ -9,12 +9,19 @@ import {
     ValidationError,
 } from "../utils";
 
-export const errorHandlerMiddleware = (err: unknown, request: Request, res: Response, next: NextFunction) => {
+export const errorHandlerMiddleware = (
+    err: unknown,
+    request: Request,
+    res: Response,
+    next: NextFunction
+) => {
     console.log("Error", err);
     if (err instanceof ValidationError) {
         console.log("Validation");
 
-        return res.status(400).json({ name: err.name, message: err.message, errors: err.errors });
+        return res
+            .status(400)
+            .json({ name: err.name, message: err.message, errors: err.errors });
     }
 
     if (err instanceof BadRequestError) {

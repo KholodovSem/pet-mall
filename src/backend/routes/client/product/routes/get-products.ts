@@ -1,7 +1,15 @@
 import { type Handler } from "express";
 import { Op, WhereOptions } from "sequelize";
 
-import { Product, type ProductAttributes, Tag, type TagAttributes } from "../../../../../database/models";
+import {
+    Product,
+    Tag,
+    type TagAttributes,
+    type ManufacturerAttributes,
+    type PurposeAttributes,
+    Manufacturer,
+    Purpose,
+} from "../../../../../database/models";
 
 export const getProducts: Handler = async (req, res) => {
     const query = req.query as Record<string, string | undefined>;
@@ -13,44 +21,43 @@ export const getProducts: Handler = async (req, res) => {
 
     const tagNames = tags?.split(",").map((tag) => tag.toLowerCase().trim());
 
-    const productWhere: WhereOptions<ProductAttributes>[] = [];
     const tagWhere: WhereOptions<TagAttributes> = {};
+    const companyWhere: WhereOptions<ManufacturerAttributes> = {};
+    const purposeWhere: WhereOptions<PurposeAttributes> = {};
 
-    console.log("Product where:", productWhere);
-    console.log("Tag where:", tagWhere);
-
-    if (company || purpose) {
-        if (company) {
-            productWhere.push({
-                company: {
-                    [Op.iLike]: `${company.trim()}`,
-                },
-            });
-        }
-
-        if (purpose) {
-            productWhere.push({
-                purpose: {
-                    [Op.iLike]: `${purpose.trim()}`,
-                },
-            });
-        }
-    }
-
-    if (tagNames) {
+    if (purpose) {
         tagWhere.name = {
             [Op.in]: tagNames,
         };
     }
 
+    if (company) {
+        companyWhere.name = {
+            [Op.eq]: company,
+        };
+    }
+
+    if (tagNames) {
+        purposeWhere.name = {
+            [Op.eq]: purpose,
+        };
+    }
+
     const products = await Product.findAll({
-        include: {
-            model: Tag,
-            where: tagWhere,
-        },
-        where: {
-            [Op.and]: productWhere,
-        },
+        include: [
+            {
+                model: Tag,
+                where: tagWhere,
+            },
+            {
+                model: Manufacturer,
+                where: companyWhere,
+            },
+            {
+                model: Purpose,
+                where: purposeWhere,
+            },
+        ],
         limit: limit,
         offset: offset,
     });

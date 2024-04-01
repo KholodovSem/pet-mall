@@ -4,22 +4,27 @@ import { sequelize } from "../";
 
 export type ProductAttributes = {
     id: number;
-    company: string;
-    purpose: string;
     price: number;
     quantity: number;
     image: string | null;
+
+    manufacturer_id: number;
+    purpose_id: number;
 };
 
 type ProductCreationAttributes = Optional<ProductAttributes, "id">;
 
-export class Product extends Model<ProductAttributes, ProductCreationAttributes> {
+export class Product extends Model<
+    ProductAttributes,
+    ProductCreationAttributes
+> {
     declare id: number;
-    declare company: string;
-    declare purpose: string;
     declare price: number;
     declare quantity: number;
     declare image: string | null;
+
+    declare manufacturer_id: number;
+    declare purpose_id: number;
 }
 
 Product.init(
@@ -41,12 +46,12 @@ Product.init(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        company: {
-            type: DataTypes.STRING,
+        manufacturer_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
-        purpose: {
-            type: DataTypes.STRING,
+        purpose_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
     },

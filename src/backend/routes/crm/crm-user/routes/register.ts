@@ -3,7 +3,12 @@ import { Op } from "sequelize";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 
-import { CRMUser, PossibleRole, Role, UserRole } from "../../../../../database/models";
+import {
+    CRMUser,
+    PossibleRole,
+    Role,
+    UserRole,
+} from "../../../../../database/models";
 import { BadRequestError, ValidationError } from "../../../../utils";
 
 export const register: Handler = async (req, res) => {
@@ -35,9 +40,11 @@ export const register: Handler = async (req, res) => {
         },
     });
 
-    //TODO: Is it right way to handle this error type
+    //TODO: Is it right way to handle this error type?
     if (!role) {
-        return res.status(502).json({ message: "There is no such role in the database" });
+        return res
+            .status(502)
+            .json({ message: "There is no such role in the database" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

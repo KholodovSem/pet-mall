@@ -41,8 +41,21 @@ const createOrderSchema = checkSchema({
     },
 });
 
-const orderChecker = query("orderId", "Order id must be provided in query params");
+const orderChecker = query(
+    "orderId",
+    "Order id must be provided in query params"
+);
 
 orderController.get("/", authMiddleware, routeHandlerMiddleware(getOrders));
-orderController.post("/", authMiddleware, createOrderSchema, routeHandlerMiddleware(createOrder));
-orderController.post("/decline/:id", authMiddleware, orderChecker, routeHandlerMiddleware(declineOrder));
+orderController.post(
+    "/",
+    authMiddleware,
+    createOrderSchema,
+    routeHandlerMiddleware(createOrder)
+);
+orderController.post(
+    "/decline/:id",
+    authMiddleware,
+    orderChecker,
+    routeHandlerMiddleware(declineOrder)
+);

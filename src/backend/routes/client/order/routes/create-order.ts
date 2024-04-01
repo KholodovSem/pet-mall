@@ -2,17 +2,28 @@ import { type Handler } from "express";
 import { validationResult } from "express-validator";
 import { Op } from "sequelize";
 
-import { User, OrderProduct, Order, OrderStatus, Product } from "../../../../../database/models";
+import {
+    User,
+    OrderProduct,
+    Order,
+    OrderStatus,
+    Product,
+} from "../../../../../database/models";
 import { NotFoundError, ValidationError } from "../../../../utils";
 
 export const createOrder: Handler = async (req, res) => {
     const validationErrors = validationResult(req);
 
     if (validationErrors) {
-        throw new ValidationError(validationErrors.array().map((error) => error.msg));
+        throw new ValidationError(
+            validationErrors.array().map((error) => error.msg)
+        );
     }
 
-    const products = req.body.products as { productId: number; quantity: number }[];
+    const products = req.body.products as {
+        productId: number;
+        quantity: number;
+    }[];
 
     const user = await User.findOne({
         where: {
@@ -35,17 +46,23 @@ export const createOrder: Handler = async (req, res) => {
     const productsErrors: string[] = [];
 
     for (const product of products) {
-        const databaseProduct = databaseProducts.find((databaseProduct) => databaseProduct.id === product.productId);
+        const databaseProduct = databaseProducts.find(
+            (databaseProduct) => databaseProduct.id === product.productId
+        );
 
         if (!databaseProduct) {
-            productsErrors.push(`Product with id:${product.productId} doesn't exist`);
+            productsErrors.push(
+                `Product with id:${product.productId} doesn't exist`
+            );
             continue;
         }
 
         const isEnough = product.quantity <= databaseProduct.quantity;
 
         if (!isEnough) {
-            productsErrors.push(`Product with id:${product.productId} is not available in the right quantity`);
+            productsErrors.push(
+                `Product with id:${product.productId} is not available in the right quantity`
+            );
         }
     }
 
@@ -53,7 +70,10 @@ export const createOrder: Handler = async (req, res) => {
         throw new ValidationError(productsErrors);
     }
 
-    const order = await Order.create({ status: OrderStatus.PENDING, userId: user.id });
+    const order = await Order.create({
+        status: OrderStatus.PENDING,
+        userId: user.id,
+    });
 
     await OrderProduct.bulkCreate(
         databaseProducts.map((product) => ({

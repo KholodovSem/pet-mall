@@ -6,7 +6,11 @@ import jwt from "jsonwebtoken";
 
 import { User } from "../../../../../database/models/User";
 
-import { BadRequestError, NotFoundError, ValidationError } from "../../../../utils";
+import {
+    BadRequestError,
+    NotFoundError,
+    ValidationError,
+} from "../../../../utils";
 import { Op } from "sequelize";
 
 export const loginUser: Handler = async (req, res) => {
