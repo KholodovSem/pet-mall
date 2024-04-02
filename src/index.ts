@@ -14,6 +14,7 @@ const PORT = config.port;
 //TODO: Websocket
 //TODO: Microservice
 //TODO: Nest.js
+//TODO: Is auth middleware handle case when token is expire? 
 
 const connectDatabase = async () => {
     try {

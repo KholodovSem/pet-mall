@@ -17,6 +17,9 @@ export const authMiddleware: Handler = (req, _, next) => {
             config.jwtSecret
         ) as JwtPayload & { userId: number };
 
+        console.log('Token: ', JSON.stringify(decodedToken));
+
+
         req.userId = decodedToken.userId;
 
         next();

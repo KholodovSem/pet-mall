@@ -34,9 +34,9 @@ export const loginUser: Handler = async (req, res) => {
         throw new NotFoundError(`User with ${email} not found`);
     }
 
-    const isPasswordMatch = await bcrypt.compare(user.password, password);
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-    if (isPasswordMatch) {
+    if (!isPasswordMatch) {
         throw new BadRequestError("Password or email is incorrect");
     }
 
