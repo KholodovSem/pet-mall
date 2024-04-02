@@ -34,7 +34,3 @@ Purpose.init(
     },
     { sequelize, tableName: "purposes", modelName: "purpose" }
 );
-
-Purpose.afterDestroy(async (instance, options) => {
-    await Product.destroy({ where: { purpose_id: instance.id } });
-});

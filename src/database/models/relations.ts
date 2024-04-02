@@ -11,12 +11,19 @@ import { Manufacturer } from "./Manufacturer";
 import { Purpose } from "./Purpose";
 
 Product.belongsToMany(Tag, { through: ProductTag, foreignKey: "product_id" });
-Tag.belongsToMany(Product, { through: ProductTag, foreignKey: "tag_id" });
+Tag.belongsToMany(Product, {
+    through: ProductTag,
+    foreignKey: "tag_id",
+    onDelete: "CASCADE",
+});
 
-Manufacturer.hasMany(Product, { foreignKey: "manufacturer_id" });
+Manufacturer.hasMany(Product, {
+    foreignKey: "manufacturer_id",
+    onDelete: "CASCADE",
+});
 Product.belongsTo(Manufacturer, { foreignKey: "manufacturer_id" });
 
-Purpose.hasMany(Product, { foreignKey: "purpose_id" });
+Purpose.hasMany(Product, { foreignKey: "purpose_id", onDelete: "CASCADE" });
 Product.belongsTo(Purpose, { foreignKey: "purpose_id" });
 
 User.hasMany(Order);

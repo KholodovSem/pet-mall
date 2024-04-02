@@ -35,7 +35,3 @@ Manufacturer.init(
     },
     { sequelize, tableName: "manufacturers", modelName: "manufacturer" }
 );
-
-Manufacturer.afterDestroy(async (instance, options) => {
-    await Product.destroy({ where: { manufacturer_id: instance.id } });
-});

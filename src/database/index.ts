@@ -3,9 +3,9 @@ import { config } from "../config";
 
 export const sequelize = new Sequelize({
     dialect: "postgres",
-    storage: "postgres:5432/postgres",
-    host: "localhost",
-    username: "postgres",
+    host: config.database.host,
+    port: parseInt(config.database.port),
+    database: config.database.name,
+    username: config.database.username,
     password: config.database.password,
-    // logging: false,
 });

@@ -1,6 +1,6 @@
 import { sequelize } from "./database";
-import { app } from "./backend/app";
-
+import { server } from "./backend/server";
+import { socket } from "./backend/socket";
 import { Role, PossibleRole } from "./database/models";
 
 import { config } from "./config";
@@ -9,6 +9,11 @@ const PORT = config.port;
 
 //TODO: Seed db fn in separate file.
 //TODO: Ask Maks about similar handlers in routes (manufacturer, tag, purpose).
+//TODO: Product routes for crm
+//TODO: Connect queue and worker to ... ???
+//TODO: Websocket
+//TODO: Microservice
+//TODO: Nest.js
 
 const connectDatabase = async () => {
     try {
@@ -32,7 +37,12 @@ const connectDatabase = async () => {
 
 const init = async () => {
     await connectDatabase();
-    app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));
+
+    socket.on("connect", (socket) => {
+        console.log("Socked: User connected");
+    });
+
+    server.listen(PORT, () => console.log(`Server started on port: ${PORT}`));
 };
 
 init();
