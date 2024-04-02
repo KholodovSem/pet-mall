@@ -17,27 +17,27 @@ export const getProducts: Handler = async (req, res) => {
     const limit = parseInt(query.limit || "") || undefined;
     const offset = page && limit ? (page - 1) * limit : undefined;
 
-    const { company, purpose, tags } = query;
+    const { manufacturer, purpose, tags } = query;
 
     const tagNames = tags?.split(",").map((tag) => tag.toLowerCase().trim());
 
     const tagWhere: WhereOptions<TagAttributes> = {};
-    const companyWhere: WhereOptions<ManufacturerAttributes> = {};
+    const manufacturerWhere: WhereOptions<ManufacturerAttributes> = {};
     const purposeWhere: WhereOptions<PurposeAttributes> = {};
 
-    if (purpose) {
+    if (tagNames) {
         tagWhere.name = {
             [Op.in]: tagNames,
         };
     }
 
-    if (company) {
-        companyWhere.name = {
-            [Op.eq]: company,
+    if (manufacturer) {
+        manufacturerWhere.name = {
+            [Op.eq]: manufacturer,
         };
     }
 
-    if (tagNames) {
+    if (purpose) {
         purposeWhere.name = {
             [Op.eq]: purpose,
         };
@@ -51,7 +51,7 @@ export const getProducts: Handler = async (req, res) => {
             },
             {
                 model: Manufacturer,
-                where: companyWhere,
+                where: manufacturerWhere,
             },
             {
                 model: Purpose,
