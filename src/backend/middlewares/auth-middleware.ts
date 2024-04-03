@@ -1,7 +1,7 @@
 import { type Handler } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { ForbiddenError } from "../utils";
+import { BadRequestError, ForbiddenError } from "../utils";
 import { config } from "../../config";
 
 export const authMiddleware: Handler = (req, _, next) => {
@@ -10,15 +10,16 @@ export const authMiddleware: Handler = (req, _, next) => {
             throw new ForbiddenError("Token not provided");
         }
 
+        if (!req.headers.authorization.startsWith("Bearer")) {
+            throw new BadRequestError("Invalid authorization header");
+        }
+
         const [__, token] = req.headers.authorization.split(" ");
 
         const decodedToken = jwt.verify(
             token,
             config.jwtSecret
         ) as JwtPayload & { userId: number };
-
-        console.log('Token: ', JSON.stringify(decodedToken));
-
 
         req.userId = decodedToken.userId;
 
