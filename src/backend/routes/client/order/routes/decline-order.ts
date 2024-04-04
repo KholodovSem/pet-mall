@@ -6,9 +6,9 @@ import { Order, OrderStatus } from "../../../../../database/models";
 import { NotFoundError } from "../../../../utils";
 
 export const declineOrder: Handler = async (req, res) => {
-    const query = req.params;
+    const params = req.params;
 
-    const orderId = parseInt(query.id || "");
+    const orderId = parseInt(params.id || "");
 
     const order = await Order.findOne({
         where: {

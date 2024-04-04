@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { checkSchema, query } from "express-validator";
 
-import { authMiddleware, routeHandlerMiddleware } from "../../../middlewares";
+import {
+    authMiddleware,
+    routeHandlerMiddleware,
+    validationMiddleware,
+} from "../../../middlewares";
 
 import { createOrder, getOrders, declineOrder } from "./routes";
 
@@ -29,7 +33,6 @@ const createOrderSchema = checkSchema({
             errorMessage: "It should be at least 1",
             options: {
                 min: 1,
-                //TODO: Max?
             },
         },
         isNumeric: {
@@ -41,21 +44,20 @@ const createOrderSchema = checkSchema({
     },
 });
 
-const orderChecker = query(
-    "orderId",
-    "Order id must be provided in query params"
-);
+const orderChecker = query("id", "Order id must be provided in query params");
 
 orderController.get("/", authMiddleware, routeHandlerMiddleware(getOrders));
 orderController.post(
     "/",
     authMiddleware,
     createOrderSchema,
+    validationMiddleware,
     routeHandlerMiddleware(createOrder)
 );
 orderController.post(
     "/decline/:id",
     authMiddleware,
     orderChecker,
+    validationMiddleware,
     routeHandlerMiddleware(declineOrder)
 );

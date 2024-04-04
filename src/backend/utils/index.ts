@@ -1,2 +1,2 @@
 export * from "./error";
-export * from "./credential-checker";
+export * from "./credential-schema";

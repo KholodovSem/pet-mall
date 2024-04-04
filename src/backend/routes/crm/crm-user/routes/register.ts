@@ -1,6 +1,5 @@
 import { Handler } from "express";
 import { Op } from "sequelize";
-import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 
 import {
@@ -9,15 +8,9 @@ import {
     Role,
     UserRole,
 } from "../../../../../database/models";
-import { BadRequestError, ValidationError } from "../../../../utils";
+import { BadRequestError } from "../../../../utils";
 
 export const register: Handler = async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        throw new ValidationError(errors.array().map((error) => error.msg));
-    }
-
     const { email, password } = req.body;
 
     const isCrmUserExist = await CRMUser.findOne({
@@ -40,7 +33,6 @@ export const register: Handler = async (req, res) => {
         },
     });
 
-    //TODO: Is it right way to handle this error type?
     if (!role) {
         return res
             .status(502)

@@ -7,19 +7,22 @@ import { PossibleRole } from "../../../../database/models";
 import {
     routeHandlerMiddleware,
     permissionMiddleware,
+    validationMiddleware,
 } from "../../../middlewares";
-import { credentialsChecker } from "../../../utils";
+import { credentialSchema } from "../../../utils";
 
 export const crmUserController = Router();
 
 crmUserController.post(
     "/register",
-    credentialsChecker,
+    credentialSchema,
+    validationMiddleware,
     permissionMiddleware(PossibleRole.ADMIN),
     routeHandlerMiddleware(register)
 );
 crmUserController.post(
     "/login",
-    credentialsChecker,
+    credentialSchema,
+    validationMiddleware,
     routeHandlerMiddleware(login)
 );

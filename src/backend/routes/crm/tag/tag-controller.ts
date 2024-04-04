@@ -9,11 +9,12 @@ import {
     routeHandlerMiddleware,
     permissionMiddleware,
     authMiddleware,
+    validationMiddleware,
 } from "../../../middlewares";
 
 export const tagController = Router();
 
-const tagBodyChecker = checkSchema({
+const tagSchema = checkSchema({
     name: {
         notEmpty: {
             errorMessage: "Tag name is required",
@@ -24,7 +25,7 @@ const tagBodyChecker = checkSchema({
     },
 });
 
-const tagIdChecker = query("id", "You must provide company id");
+const tagParams = query("id", "You must provide company id");
 
 tagController.get(
     "/",
@@ -36,21 +37,24 @@ tagController.post(
     "/",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
-    tagBodyChecker,
+    tagSchema,
+    validationMiddleware,
     routeHandlerMiddleware(createTag)
 );
 tagController.put(
     "/:id",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
-    tagBodyChecker,
-    tagIdChecker,
+    tagSchema,
+    tagParams,
+    validationMiddleware,
     routeHandlerMiddleware(updateTag)
 );
 tagController.delete(
     "/:id",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN),
-    tagIdChecker,
+    tagParams,
+    validationMiddleware,
     routeHandlerMiddleware(deleteTag)
 );

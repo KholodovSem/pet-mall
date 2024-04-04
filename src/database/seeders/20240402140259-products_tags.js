@@ -1,5 +1,7 @@
 "use strict";
 
+const getRandomInteger = require("lodash.random");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
@@ -16,7 +18,7 @@ module.exports = {
         );
 
         const products_tags = productIds.map(({ id: productId }) => {
-            const tagIndex = Math.floor(Math.random() * tagIds.length);
+            const tagIndex = getRandomInteger(0, tagIds.length - 1);
 
             return {
                 product_id: productId,

@@ -1,20 +1,11 @@
 import { Handler } from "express";
-import { validationResult } from "express-validator";
 import { Op } from "sequelize";
 
 import { Purpose } from "../../../../../database/models";
 
-import { BadRequestError, ValidationError } from "../../../../utils";
+import { BadRequestError } from "../../../../utils";
 
 export const createPurpose: Handler = async (req, res) => {
-    const validationErrors = validationResult(req);
-
-    if (!validationErrors.isEmpty()) {
-        throw new ValidationError(
-            validationErrors.array().map((error) => error.msg)
-        );
-    }
-
     const { name } = req.body;
 
     const isAlreadyExist = await Purpose.findOne({

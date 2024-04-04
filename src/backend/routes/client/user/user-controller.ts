@@ -1,21 +1,25 @@
 import { Router } from "express";
-import { checkSchema } from "express-validator";
 
-import { routeHandlerMiddleware } from "../../../middlewares";
+import {
+    routeHandlerMiddleware,
+    validationMiddleware,
+} from "../../../middlewares";
 
 import { loginUser, registerUser } from "./routes";
 
-import { credentialsChecker } from "../../../utils";
+import { credentialSchema } from "../../../utils";
 
 export const userController = Router();
 
 userController.post(
     "/register",
-    credentialsChecker,
+    credentialSchema,
+    validationMiddleware,
     routeHandlerMiddleware(registerUser)
 );
 userController.post(
     "/login",
-    credentialsChecker,
+    credentialSchema,
+    validationMiddleware,
     routeHandlerMiddleware(loginUser)
 );

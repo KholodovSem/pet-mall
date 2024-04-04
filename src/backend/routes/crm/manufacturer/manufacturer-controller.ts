@@ -14,11 +14,12 @@ import {
     routeHandlerMiddleware,
     permissionMiddleware,
     authMiddleware,
+    validationMiddleware,
 } from "../../../middlewares";
 
 export const manufacturerController = Router();
 
-const manufacturerChecker = checkSchema({
+const manufacturerSchema = checkSchema({
     name: {
         notEmpty: {
             errorMessage: "Company name is required",
@@ -29,7 +30,7 @@ const manufacturerChecker = checkSchema({
     },
 });
 
-const manufacturerIdChecker = query("id", "You must provide company id");
+const manufacturerParams = query("id", "You must provide company id");
 
 manufacturerController.get(
     "/",
@@ -41,21 +42,24 @@ manufacturerController.post(
     "/",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
-    manufacturerChecker,
+    manufacturerSchema,
+    validationMiddleware,
     routeHandlerMiddleware(createManufacturer)
 );
 manufacturerController.put(
     "/:id",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
-    manufacturerChecker,
-    manufacturerIdChecker,
+    manufacturerSchema,
+    manufacturerParams,
+    validationMiddleware,
     routeHandlerMiddleware(updateManufacturer)
 );
 manufacturerController.delete(
     "/:id",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN),
-    manufacturerIdChecker,
+    manufacturerParams,
+    validationMiddleware,
     routeHandlerMiddleware(deleteManufacturer)
 );

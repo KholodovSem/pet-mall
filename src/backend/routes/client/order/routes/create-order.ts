@@ -1,5 +1,4 @@
 import { type Handler } from "express";
-import { validationResult } from "express-validator";
 import { Op } from "sequelize";
 
 import {
@@ -12,14 +11,6 @@ import {
 import { NotFoundError, ValidationError } from "../../../../utils";
 
 export const createOrder: Handler = async (req, res) => {
-    const validationErrors = validationResult(req);
-
-    if (validationErrors) {
-        throw new ValidationError(
-            validationErrors.array().map((error) => error.msg)
-        );
-    }
-
     const products = req.body.products as {
         productId: number;
         quantity: number;

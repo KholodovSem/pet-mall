@@ -8,6 +8,8 @@ export type ProductAttributes = {
     price: number;
     quantity: number;
     image: string | null;
+    manufacturer_id: number;
+    purpose_id: number;
 };
 
 type ProductCreationAttributes = Optional<ProductAttributes, "id">;
@@ -21,6 +23,8 @@ export class Product extends Model<
     declare price: number;
     declare quantity: number;
     declare image: string | null;
+    declare manufacturer_id: number;
+    declare purpose_id: number;
 }
 
 Product.init(
@@ -33,7 +37,7 @@ Product.init(
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         price: {
             type: DataTypes.INTEGER,
@@ -45,7 +49,15 @@ Product.init(
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        }
+        },
+        manufacturer_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        purpose_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
     },
     { sequelize, tableName: "products", modelName: "product" }
 );

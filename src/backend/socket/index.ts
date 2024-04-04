@@ -1,36 +1,13 @@
-import { Server, Socket } from "socket.io";
-import { IncomingMessage } from "http";
-import jwt from "jsonwebtoken";
+import { Server as SocketServer } from "socket.io";
 
 import { server } from "../server";
-import { config } from "../../config";
 
-import { BadRequestError } from "../utils";
+import { socketAuthMiddleware } from "./middlewares";
 
-type ExtendedError = Error & { data?: any };
+export const socketServer = new SocketServer(server, {
+    cors: {
+        origin: "*",
+    },
+});
 
-const socketAuthMiddleware = (
-    socket: Socket,
-    next: (extendedError?: ExtendedError) => void
-): void => {
-    const token = socket.handshake.auth.token;
-
-    if (!token) {
-        return next(new BadRequestError("Token not provided"));
-    }
-
-    try {
-        jwt.verify(token, config.jwtSecret);
-        next();
-    } catch (error) {
-        if (error instanceof Error) {
-            return next(error);
-        }
-
-        next(new Error("Unknown server error"));
-    }
-};
-
-export const socket = new Server(server);
-
-socket.use(socketAuthMiddleware);
+socketServer.use(socketAuthMiddleware);

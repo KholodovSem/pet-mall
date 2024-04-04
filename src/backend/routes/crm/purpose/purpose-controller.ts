@@ -14,11 +14,12 @@ import {
     routeHandlerMiddleware,
     permissionMiddleware,
     authMiddleware,
+    validationMiddleware,
 } from "../../../middlewares";
 
 export const purposeController = Router();
 
-const purposeChecker = checkSchema({
+const purposeSchema = checkSchema({
     name: {
         notEmpty: {
             errorMessage: "Purpose name is required",
@@ -29,7 +30,7 @@ const purposeChecker = checkSchema({
     },
 });
 
-const purposeIdChecker = query("id", "You must provide company id");
+const purposeParams = query("id", "You must provide company id");
 
 purposeController.get(
     "/",
@@ -41,21 +42,24 @@ purposeController.post(
     "/",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
-    purposeChecker,
+    purposeSchema,
+    validationMiddleware,
     routeHandlerMiddleware(createPurpose)
 );
 purposeController.put(
     "/:id",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
-    purposeChecker,
-    purposeIdChecker,
+    purposeSchema,
+    purposeParams,
+    validationMiddleware,
     routeHandlerMiddleware(updatePurpose)
 );
 purposeController.delete(
     "/:id",
     authMiddleware,
     permissionMiddleware(PossibleRole.ADMIN),
-    purposeIdChecker,
+    purposeParams,
+    validationMiddleware,
     routeHandlerMiddleware(deletePurpose)
 );
