@@ -35,13 +35,13 @@ const manufacturerParams = query("id", "You must provide company id");
 manufacturerController.get(
     "/",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     routeHandlerMiddleware(getManufacturers)
 );
 manufacturerController.post(
     "/",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     manufacturerSchema,
     validationMiddleware,
     routeHandlerMiddleware(createManufacturer)
@@ -49,7 +49,7 @@ manufacturerController.post(
 manufacturerController.put(
     "/:id",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     manufacturerSchema,
     manufacturerParams,
     validationMiddleware,
@@ -58,7 +58,7 @@ manufacturerController.put(
 manufacturerController.delete(
     "/:id",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN),
+    permissionMiddleware(),
     manufacturerParams,
     validationMiddleware,
     routeHandlerMiddleware(deleteManufacturer)

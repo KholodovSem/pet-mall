@@ -22,7 +22,7 @@ export const login: Handler = async (req, res) => {
         throw new NotFoundError(`User with ${email} not found`);
     }
 
-    const isPasswordMatch = await bcrypt.compare(crmUser.password, password);
+    const isPasswordMatch = await bcrypt.compare(password, crmUser.password);
 
     if (!isPasswordMatch) {
         throw new BadRequestError("Password or email is incorrect");

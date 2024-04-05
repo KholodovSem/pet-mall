@@ -35,13 +35,13 @@ const purposeParams = query("id", "You must provide company id");
 purposeController.get(
     "/",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     routeHandlerMiddleware(getPurposes)
 );
 purposeController.post(
     "/",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     purposeSchema,
     validationMiddleware,
     routeHandlerMiddleware(createPurpose)
@@ -49,7 +49,7 @@ purposeController.post(
 purposeController.put(
     "/:id",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     purposeSchema,
     purposeParams,
     validationMiddleware,
@@ -58,7 +58,7 @@ purposeController.put(
 purposeController.delete(
     "/:id",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN),
+    permissionMiddleware(),
     purposeParams,
     validationMiddleware,
     routeHandlerMiddleware(deletePurpose)

@@ -30,13 +30,13 @@ const tagParams = query("id", "You must provide company id");
 tagController.get(
     "/",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     routeHandlerMiddleware(getTags)
 );
 tagController.post(
     "/",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     tagSchema,
     validationMiddleware,
     routeHandlerMiddleware(createTag)
@@ -44,7 +44,7 @@ tagController.post(
 tagController.put(
     "/:id",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN, PossibleRole.MANAGER),
+    permissionMiddleware(PossibleRole.MANAGER),
     tagSchema,
     tagParams,
     validationMiddleware,
@@ -53,7 +53,7 @@ tagController.put(
 tagController.delete(
     "/:id",
     authMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN),
+    permissionMiddleware(),
     tagParams,
     validationMiddleware,
     routeHandlerMiddleware(deleteTag)

@@ -11,36 +11,31 @@ import { createOrder, getOrders, declineOrder } from "./routes";
 
 export const orderController = Router();
 
-/* 
-    Body example: 
-    {
-        productId: number;
-        quantity: number;
-    }
-*/
-
 const createOrderSchema = checkSchema({
-    productId: {
-        isNumeric: {
-            errorMessage: "Product id must be a number",
-        },
-        exists: {
-            errorMessage: "Product id is required",
-        },
-    },
-    amount: {
-        isLength: {
-            errorMessage: "It should be at least 1",
+    products: {
+        errorMessage: "Products field must be provided as array",
+        isArray: {
+            errorMessage: 'Provide at least one product',
+            bail: true,
             options: {
-                min: 1,
-            },
+                min: 1
+            }
         },
-        isNumeric: {
-            errorMessage: "Amount must be a number",
-        },
-        exists: {
-            errorMessage: "Amount is required",
-        },
+        custom: {
+            options: (products) => {
+                for (const product of products) {
+                    if (!product.productId || !product.quantity) {
+                        throw new Error("Product id and quantity is required");
+                    }
+
+                    if (typeof product.productId !== "number" || typeof product.quantity !== "number") {
+                        throw new Error("Product id and quantity must be a number");
+                    }
+                }
+
+                return true;
+            }
+        }
     },
 });
 

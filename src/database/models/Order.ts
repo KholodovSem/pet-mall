@@ -1,6 +1,8 @@
-import { DataTypes, Model, type Optional } from "sequelize";
+import { DataTypes, Model, NonAttribute, type Optional } from "sequelize";
 
 import { sequelize } from "../index";
+
+import { Product } from "./Product";
 
 export enum OrderStatus {
     PENDING = "pending",
@@ -23,6 +25,8 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> {
     declare id: number;
     declare status: OrderStatus;
     declare user_id: number;
+
+    declare products?: NonAttribute<Product[]>;
 }
 
 Order.init(

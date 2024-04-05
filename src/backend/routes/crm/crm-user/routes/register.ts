@@ -21,6 +21,7 @@ export const register: Handler = async (req, res) => {
         },
     });
 
+
     if (isCrmUserExist) {
         throw new BadRequestError(`User with email: ${email} already exist`);
     }

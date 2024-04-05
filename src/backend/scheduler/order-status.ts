@@ -41,7 +41,7 @@ export const changeOrderTask = cron.schedule(
         const orders = await Order.findAll({
             where: {
                 status: {
-                    [Op.ne]: OrderStatus.DONE,
+                    [Op.notIn]: [OrderStatus.DECLINED, OrderStatus.DONE]
                 },
             },
         });

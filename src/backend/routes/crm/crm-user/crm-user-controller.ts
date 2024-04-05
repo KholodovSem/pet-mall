@@ -2,12 +2,11 @@ import { Router } from "express";
 
 import { register, login } from "./routes";
 
-import { PossibleRole } from "../../../../database/models";
-
 import {
     routeHandlerMiddleware,
     permissionMiddleware,
     validationMiddleware,
+    authMiddleware,
 } from "../../../middlewares";
 import { credentialSchema } from "../../../utils";
 
@@ -17,7 +16,8 @@ crmUserController.post(
     "/register",
     credentialSchema,
     validationMiddleware,
-    permissionMiddleware(PossibleRole.ADMIN),
+    authMiddleware,
+    permissionMiddleware(),
     routeHandlerMiddleware(register)
 );
 crmUserController.post(

@@ -8,6 +8,7 @@ import {
     OrderStatus,
     Product,
 } from "../../../../../database/models";
+
 import { NotFoundError, ValidationError } from "../../../../utils";
 
 export const createOrder: Handler = async (req, res) => {
@@ -34,21 +35,30 @@ export const createOrder: Handler = async (req, res) => {
         },
     });
 
+    const databaseProductsMap = databaseProducts.reduce(
+        (acc, product) => {
+            acc[product.id] = product;
+
+            return acc;
+        },
+        {} as Record<number, Product>
+    );
+
     const productsErrors: string[] = [];
 
     for (const product of products) {
-        const databaseProduct = databaseProducts.find(
-            (databaseProduct) => databaseProduct.id === product.productId
-        );
+        const isProductExist = databaseProductsMap[product.productId];
 
-        if (!databaseProduct) {
+        if (!isProductExist) {
             productsErrors.push(
                 `Product with id:${product.productId} doesn't exist`
             );
             continue;
         }
 
-        const isEnough = product.quantity <= databaseProduct.quantity;
+        const isEnough =
+            product.quantity <=
+            databaseProductsMap[product.productId]?.quantity;
 
         if (!isEnough) {
             productsErrors.push(
@@ -57,7 +67,7 @@ export const createOrder: Handler = async (req, res) => {
         }
     }
 
-    if (!productsErrors.length) {
+    if (productsErrors.length) {
         throw new ValidationError(productsErrors);
     }
 
@@ -73,30 +83,17 @@ export const createOrder: Handler = async (req, res) => {
         }))
     );
 
+    const updatedProducts = products.map((product) => {
+        const quantity =
+            databaseProductsMap[product.productId].quantity - product.quantity;
+
+        return Product.update(
+            { quantity },
+            { where: { id: product.productId } }
+        );
+    });
+
+    await Promise.all(updatedProducts);
+
     return res.json(order);
 };
-
-/ Variant to handle possible errors with products /;
-
-// const productsMap = databaseProducts.reduce((acc, product) => {
-
-//     acc[product.id] = product;
-
-//     return acc;
-
-// }, {} as Record<number, Product>);
-
-// const errors = products.reduce((acc, product) => {
-//     const isProductExist = productsMap[product.productId];
-//     const isEnough = product.quantity <= productsMap[product.productId]?.quantity;
-
-//     if (!isProductExist) {
-//         acc.push(`Product with id:${product.productId} doesn't exist`);
-//     }
-
-//     if (!isEnough) {
-//         acc.push(`Product with id:${product.productId} is not available in the right quantity`);
-//     }
-
-//     return acc;
-// }, [] as string[]);

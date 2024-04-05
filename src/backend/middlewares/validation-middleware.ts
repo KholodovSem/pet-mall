@@ -10,6 +10,8 @@ export const validationMiddleware: Handler = (req, res, next) => {
         if (!errors.isEmpty()) {
             throw new ValidationError(errors.array().map((error) => error.msg));
         }
+
+        next();
     } catch (error) {
         next(error);
     }

@@ -14,16 +14,17 @@ const notificationService =
 
 const PORT = config.port;
 
+//TODO: Cache middleware (Redis)
 //TODO: Product routes for crm
 //TODO: Websocket (test (codesandbox))
 //TODO: Microservice
 //TODO: Nest.js
-//TODO: Permission middleware // Ask Vadim
+//TODO: Recalculate product quantity when user create an order or decline it
 
 const connectDatabase = async () => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync({ force: true });
+        await sequelize.sync();
         console.log("Successful connection to the database!");
     } catch (error) {
         console.log("Unable to connect to the database:");

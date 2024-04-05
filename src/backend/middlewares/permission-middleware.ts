@@ -15,11 +15,11 @@ export const permissionMiddleware = (...allowedRoles: PossibleRole[]) => {
                 throw new UnauthorizedError("No permissions");
             }
 
-            const isUserHasPermission = user?.roles.some((role) =>
-                allowedRoles.includes(role.name)
+            const isUserHasPermission = user?.roles.some(
+                (role) =>
+                    role.name === PossibleRole.ADMIN ||
+                    allowedRoles.includes(role.name)
             );
-
-            console.log("User:", JSON.stringify(user));
 
             if (!isUserHasPermission) {
                 throw new UnauthorizedError("No permissions");
