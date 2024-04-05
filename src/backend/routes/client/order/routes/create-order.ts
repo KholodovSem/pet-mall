@@ -63,7 +63,7 @@ export const createOrder: Handler = async (req, res) => {
 
     const order = await Order.create({
         status: OrderStatus.PENDING,
-        userId: user.id,
+        user_id: user.id,
     });
 
     await OrderProduct.bulkCreate(

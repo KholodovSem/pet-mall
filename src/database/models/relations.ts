@@ -26,8 +26,8 @@ Product.belongsTo(Manufacturer, { foreignKey: "manufacturer_id" });
 Purpose.hasMany(Product, { foreignKey: "purpose_id", onDelete: "CASCADE" });
 Product.belongsTo(Purpose, { foreignKey: "purpose_id" });
 
-User.hasMany(Order);
-Order.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(Order, { foreignKey: 'user_id' });
+Order.belongsTo(User, { foreignKey: 'user_id' });
 
 Order.belongsToMany(Product, { through: OrderProduct, foreignKey: "order_id" });
 Product.belongsToMany(Order, {

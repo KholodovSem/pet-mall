@@ -13,8 +13,8 @@ export enum OrderStatus {
 
 type OrderAttributes = {
     id: number;
-    userId: number;
     status: OrderStatus;
+    user_id: number;
 };
 
 type OrderCreationAttributes = Optional<OrderAttributes, "id">;
@@ -22,7 +22,7 @@ type OrderCreationAttributes = Optional<OrderAttributes, "id">;
 export class Order extends Model<OrderAttributes, OrderCreationAttributes> {
     declare id: number;
     declare status: OrderStatus;
-    declare userId: number;
+    declare user_id: number;
 }
 
 Order.init(
@@ -33,13 +33,13 @@ Order.init(
             autoIncrement: true,
             allowNull: false,
         },
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
         status: {
             type: DataTypes.ENUM,
             values: Object.values(OrderStatus),
+            allowNull: false,
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
     },

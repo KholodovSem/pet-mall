@@ -55,7 +55,7 @@ export const changeOrderTask = cron.schedule(
 
             const message = `Order changed status from ${oldStatus} to ${nextStatus}`;
 
-            notificationService.notify(order.userId, message);
+            notificationService.notify(order.user_id, message);
         }
     },
     { scheduled: false }

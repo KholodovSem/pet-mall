@@ -10,6 +10,18 @@ module.exports = {
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
+            {
+                email: "super_test@gmail.com",
+                password: "12345qwert",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                email: "ultra_super_test@gmail.com",
+                password: "12345qwert",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
         ]);
     },
 

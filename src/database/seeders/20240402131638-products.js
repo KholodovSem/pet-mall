@@ -28,11 +28,6 @@ module.exports = {
 
             const purposeIndex = getRandomInteger(0, purposeIds.length - 1);
 
-            console.log(`
-             Max: [M: ${manufacturerIds.length}, P: ${purposeIds.length}]
-             Random: [M: ${manufacturerIndex}, P: ${purposeIndex}]
-            `);
-
             products.push({
                 name: faker.commerce.product(),
                 price: faker.number.int({ min: 1, max: 1000 }),
