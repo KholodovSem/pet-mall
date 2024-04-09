@@ -4,13 +4,15 @@ import bodyParser from "body-parser";
 import {
     userController,
     productController,
-    orderController,
+    clientOrderController,
 } from "./routes/client";
 import {
     crmUserController,
     manufacturerController,
     tagController,
     purposeController,
+    crmOrderController,
+    crmProductsController,
 } from "./routes/crm";
 
 import { errorHandlerMiddleware, routeHandlerMiddleware } from "./middlewares";
@@ -23,13 +25,15 @@ app.use(bodyParser.json());
 // Client
 app.use("/api/auth", userController);
 app.use("/api/products", productController);
-app.use("/api/orders", orderController);
+app.use("/api/orders", clientOrderController);
 
 // CRM
 app.use("/crm/auth", crmUserController);
 app.use("/crm/manufacturers", manufacturerController);
 app.use("/crm/tags", tagController);
-app.use("/crm/purpose", purposeController);
+app.use("/crm/purposes", purposeController);
+app.use("/crm/orders", crmOrderController);
+app.use("/crm/products", crmProductsController);
 
 app.use("*", routeHandlerMiddleware(notFound));
 

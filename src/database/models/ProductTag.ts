@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Op } from "sequelize";
 
 import { sequelize } from "..";
 
@@ -25,5 +25,9 @@ ProductTag.init(
             field: "tag_id",
         },
     },
-    { sequelize, modelName: "product_tag", tableName: "products_tags" }
+    {
+        sequelize,
+        modelName: "product_tag",
+        tableName: "products_tags",
+    }
 );

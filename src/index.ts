@@ -20,6 +20,7 @@ const PORT = config.port;
 //TODO: Microservice
 //TODO: Nest.js
 //TODO: Recalculate product quantity when user create an order or decline it
+//TODO: As for the cascade when the tag is removed
 
 const connectDatabase = async () => {
     try {

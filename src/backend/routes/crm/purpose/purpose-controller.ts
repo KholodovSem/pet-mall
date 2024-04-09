@@ -30,8 +30,6 @@ const purposeSchema = checkSchema({
     },
 });
 
-const purposeParams = query("id", "You must provide company id");
-
 purposeController.get(
     "/",
     authMiddleware,
@@ -51,7 +49,6 @@ purposeController.put(
     authMiddleware,
     permissionMiddleware(PossibleRole.MANAGER),
     purposeSchema,
-    purposeParams,
     validationMiddleware,
     routeHandlerMiddleware(updatePurpose)
 );
@@ -59,7 +56,6 @@ purposeController.delete(
     "/:id",
     authMiddleware,
     permissionMiddleware(),
-    purposeParams,
     validationMiddleware,
     routeHandlerMiddleware(deletePurpose)
 );

@@ -1,5 +1,7 @@
 import { type Handler } from "express";
 import { Op, WhereOptions } from "sequelize";
+import { sha1 } from "object-hash";
+import { redis, TTL } from "../../../../redis";
 
 import {
     Product,
@@ -12,6 +14,7 @@ import {
 } from "../../../../../database/models";
 
 export const getProducts: Handler = async (req, res) => {
+    console.log(req.originalUrl, req.query);
     const query = req.query as Record<string, string | undefined>;
     const page = parseInt(query.page || "");
     const limit = parseInt(query.limit || "") || undefined;
@@ -61,6 +64,12 @@ export const getProducts: Handler = async (req, res) => {
         limit: limit,
         offset: offset,
     });
+
+    await redis.setex(
+        `${req.path}@${sha1(req.query)}`,
+        TTL,
+        JSON.stringify(products)
+    );
 
     return res.json(products);
 };

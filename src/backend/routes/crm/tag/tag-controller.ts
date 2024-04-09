@@ -25,8 +25,6 @@ const tagSchema = checkSchema({
     },
 });
 
-const tagParams = query("id", "You must provide company id");
-
 tagController.get(
     "/",
     authMiddleware,
@@ -46,7 +44,6 @@ tagController.put(
     authMiddleware,
     permissionMiddleware(PossibleRole.MANAGER),
     tagSchema,
-    tagParams,
     validationMiddleware,
     routeHandlerMiddleware(updateTag)
 );
@@ -54,7 +51,6 @@ tagController.delete(
     "/:id",
     authMiddleware,
     permissionMiddleware(),
-    tagParams,
     validationMiddleware,
     routeHandlerMiddleware(deleteTag)
 );

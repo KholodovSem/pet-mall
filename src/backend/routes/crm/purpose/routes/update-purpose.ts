@@ -1,8 +1,9 @@
 import { Handler } from "express";
+import { Op } from "sequelize";
 
 import { Purpose } from "../../../../../database/models";
 
-import { NotFoundError } from "../../../../utils";
+import { BadRequestError, NotFoundError } from "../../../../utils";
 
 export const updatePurpose: Handler = async (req, res) => {
     const params = req.params as Record<string, string | undefined>;
@@ -16,9 +17,21 @@ export const updatePurpose: Handler = async (req, res) => {
         throw new NotFoundError(`Purpose with id:${id} not found`);
     }
 
-    purpose.set({ name });
-    await purpose.save();
-    await purpose.reload();
+    const isExistWithSameName = await Purpose.findOne({
+        where: {
+            name: {
+                [Op.eq]: name,
+            },
+        },
+    });
+
+    if (isExistWithSameName) {
+        throw new BadRequestError(
+            `Purpose with ${name} already exist. Name must be unique`
+        );
+    }
+
+    purpose.update({ name });
 
     return res.json(purpose);
 };

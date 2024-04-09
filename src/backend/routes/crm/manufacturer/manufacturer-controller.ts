@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkSchema, query } from "express-validator";
+import { checkSchema } from "express-validator";
 
 import {
     createManufacturer,
@@ -22,15 +22,13 @@ export const manufacturerController = Router();
 const manufacturerSchema = checkSchema({
     name: {
         notEmpty: {
-            errorMessage: "Company name is required",
+            errorMessage: "Manufacturer name is required",
         },
         isString: {
-            errorMessage: "Company name must be a string",
+            errorMessage: "Manufacturer name must be a string",
         },
     },
 });
-
-const manufacturerParams = query("id", "You must provide company id");
 
 manufacturerController.get(
     "/",
@@ -51,7 +49,6 @@ manufacturerController.put(
     authMiddleware,
     permissionMiddleware(PossibleRole.MANAGER),
     manufacturerSchema,
-    manufacturerParams,
     validationMiddleware,
     routeHandlerMiddleware(updateManufacturer)
 );
@@ -59,7 +56,6 @@ manufacturerController.delete(
     "/:id",
     authMiddleware,
     permissionMiddleware(),
-    manufacturerParams,
     validationMiddleware,
     routeHandlerMiddleware(deleteManufacturer)
 );

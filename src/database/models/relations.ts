@@ -10,11 +10,13 @@ import { CRMUser } from "./CRMUser";
 import { Manufacturer } from "./Manufacturer";
 import { Purpose } from "./Purpose";
 
-Product.belongsToMany(Tag, { through: ProductTag, foreignKey: "product_id" });
+Product.belongsToMany(Tag, {
+    through: ProductTag,
+    foreignKey: "product_id",
+});
 Tag.belongsToMany(Product, {
     through: ProductTag,
     foreignKey: "tag_id",
-    onDelete: "CASCADE",
 });
 
 Manufacturer.hasMany(Product, {
@@ -26,8 +28,8 @@ Product.belongsTo(Manufacturer, { foreignKey: "manufacturer_id" });
 Purpose.hasMany(Product, { foreignKey: "purpose_id", onDelete: "CASCADE" });
 Product.belongsTo(Purpose, { foreignKey: "purpose_id" });
 
-User.hasMany(Order, { foreignKey: 'user_id' });
-Order.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Order, { foreignKey: "user_id" });
+Order.belongsTo(User, { foreignKey: "user_id" });
 
 Order.belongsToMany(Product, { through: OrderProduct, foreignKey: "order_id" });
 Product.belongsToMany(Order, {

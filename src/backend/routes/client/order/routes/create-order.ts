@@ -89,7 +89,13 @@ export const createOrder: Handler = async (req, res) => {
 
         return Product.update(
             { quantity },
-            { where: { id: product.productId } }
+            {
+                where: {
+                    id: {
+                        [Op.eq]: product.productId,
+                    },
+                },
+            }
         );
     });
 

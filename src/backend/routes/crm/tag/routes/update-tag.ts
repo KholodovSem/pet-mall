@@ -1,8 +1,9 @@
 import { Handler } from "express";
+import { Op } from "sequelize";
 
 import { Tag } from "../../../../../database/models";
 
-import { NotFoundError } from "../../../../utils";
+import { BadRequestError, NotFoundError } from "../../../../utils";
 
 export const updateTag: Handler = async (req, res) => {
     const params = req.params as Record<string, string | undefined>;
@@ -16,9 +17,21 @@ export const updateTag: Handler = async (req, res) => {
         throw new NotFoundError(`Tag with id:${id} not found`);
     }
 
-    tag.set({ name });
-    await tag.save();
-    await tag.reload();
+    const isExistWithSameName = await Tag.findOne({
+        where: {
+            name: {
+                [Op.eq]: name,
+            },
+        },
+    });
+
+    if (isExistWithSameName) {
+        throw new BadRequestError(
+            `Tag with ${name} already exist. Name must be unique`
+        );
+    }
+
+    tag.update({ name });
 
     return res.json(tag);
 };

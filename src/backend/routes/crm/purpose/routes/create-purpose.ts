@@ -17,7 +17,7 @@ export const createPurpose: Handler = async (req, res) => {
     });
 
     if (isAlreadyExist) {
-        throw new BadRequestError(`Purpose with name:${name} `);
+        throw new BadRequestError(`Purpose with name:${name} already exist`);
     }
 
     const purpose = await Purpose.create({ name });

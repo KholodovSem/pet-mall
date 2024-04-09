@@ -17,7 +17,7 @@ export const createTag: Handler = async (req, res) => {
     });
 
     if (isAlreadyExist) {
-        throw new BadRequestError(`Tag with name:${name} `);
+        throw new BadRequestError(`Tag with name:${name} already exist`);
     }
 
     const tag = await Tag.create({ name });

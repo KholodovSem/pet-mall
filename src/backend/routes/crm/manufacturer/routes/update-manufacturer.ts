@@ -1,8 +1,9 @@
 import { Handler } from "express";
+import { Op } from "sequelize";
 
 import { Manufacturer } from "../../../../../database/models";
 
-import { NotFoundError } from "../../../../utils";
+import { BadRequestError, NotFoundError } from "../../../../utils";
 
 export const updateManufacturer: Handler = async (req, res) => {
     const params = req.params as Record<string, string | undefined>;
@@ -16,9 +17,21 @@ export const updateManufacturer: Handler = async (req, res) => {
         throw new NotFoundError(`Manufacturer with id:${id} not found`);
     }
 
-    manufacturer.set({ name });
-    await manufacturer.save();
-    await manufacturer.reload();
+    const isExistWithSameName = await Manufacturer.findOne({
+        where: {
+            name: {
+                [Op.eq]: name,
+            },
+        },
+    });
+
+    if (isExistWithSameName) {
+        throw new BadRequestError(
+            `Manufacturer with ${name} already exist. Name must be unique`
+        );
+    }
+
+    manufacturer.update({ name });
 
     return res.json(manufacturer);
 };

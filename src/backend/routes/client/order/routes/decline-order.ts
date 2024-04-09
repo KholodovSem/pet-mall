@@ -1,12 +1,7 @@
 import { Handler } from "express";
 import { Op } from "sequelize";
 
-import {
-    Order,
-    OrderProduct,
-    OrderStatus,
-    Product,
-} from "../../../../../database/models";
+import { Order, OrderStatus, Product } from "../../../../../database/models";
 
 import { BadRequestError, NotFoundError } from "../../../../utils";
 
@@ -53,7 +48,13 @@ export const declineOrder: Handler = async (req, res) => {
     const updatedProducts = order.products?.map((product) => {
         return Product.update(
             { quantity: product.quantity + 1 },
-            { where: { id: product.id } }
+            {
+                where: {
+                    id: {
+                        [Op.eq]: product.id,
+                    },
+                },
+            }
         );
     });
 
