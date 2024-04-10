@@ -1,7 +1,7 @@
 import { type Handler } from "express";
 import { sha1 } from "object-hash";
 
-import { redis } from "../redis";
+import { redis } from "../../redis";
 
 export const cacheMiddleware: Handler = async (req, res, next) => {
     try {

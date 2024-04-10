@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { checkSchema } from "express-validator";
-import multer from "multer";
 
 import { createProduct, updateProduct } from "./routes";
 import {
     authMiddleware,
     permissionMiddleware,
     routeHandlerMiddleware,
+    uploadMiddleware,
     validationMiddleware,
 } from "../../../middlewares";
 import { PossibleRole } from "../../../../database/models";
@@ -28,12 +28,6 @@ const productSchema = checkSchema({
             },
         },
     },
-    image: {
-        optional: true,
-        custom: {
-            options: (product) => {},
-        },
-    },
     quantity: {
         isInt: {
             errorMessage:
@@ -41,6 +35,12 @@ const productSchema = checkSchema({
             options: {
                 min: 1,
             },
+        },
+    },
+    tags: {
+        optional: true,
+        isArray: {
+            errorMessage: "Tags must be an array",
         },
     },
     manufacturer_id: {
@@ -61,11 +61,14 @@ const productSchema = checkSchema({
     },
 });
 
+//! Pay attention: the body comes to us in the form-data
+//* Specify it in the postman
+
 crmProductsController.post(
     "/",
     authMiddleware,
     permissionMiddleware(PossibleRole.MANAGER),
-
+    uploadMiddleware,
     productSchema,
     validationMiddleware,
     routeHandlerMiddleware(createProduct)
@@ -75,6 +78,7 @@ crmProductsController.put(
     "/:id",
     authMiddleware,
     permissionMiddleware(PossibleRole.MANAGER),
+    uploadMiddleware,
     productSchema,
     validationMiddleware,
     routeHandlerMiddleware(updateProduct)

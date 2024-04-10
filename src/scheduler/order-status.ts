@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import { Op } from "sequelize";
 
-import { Order, OrderStatus } from "../../database/models";
+import { Order, OrderStatus } from "../database/models";
 
 import { container } from "../ioc/inversify.config";
 import { NotificationService } from "../socket/services";
@@ -41,7 +41,7 @@ export const changeOrderTask = cron.schedule(
         const orders = await Order.findAll({
             where: {
                 status: {
-                    [Op.notIn]: [OrderStatus.DECLINED, OrderStatus.DONE]
+                    [Op.notIn]: [OrderStatus.DECLINED, OrderStatus.DONE],
                 },
             },
         });

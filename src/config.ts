@@ -17,4 +17,10 @@ export const config = {
         host: process.env.REDIS_HOST || "localhost",
         port: parseInt(process.env.REDIS_PORT || "6379"),
     },
+    sftp: {
+        host: process.env.SFTP_HOST || "localhost",
+        port: parseInt(process.env.SFTP_PORT || "2222"),
+        username: process.env.SFTP_USERNAME || "admin",
+        password: process.env.SFTP_PASSWORD || "root",
+    },
 };

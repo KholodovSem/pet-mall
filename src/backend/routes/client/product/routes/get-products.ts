@@ -1,7 +1,7 @@
 import { type Handler } from "express";
 import { Op, WhereOptions } from "sequelize";
 import { sha1 } from "object-hash";
-import { redis, TTL } from "../../../../redis";
+import { redis, TTL } from "../../../../../redis";
 
 import {
     Product,

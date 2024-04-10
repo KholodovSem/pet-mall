@@ -1,6 +1,6 @@
 import { Server as SocketServer } from "socket.io";
 
-import { server } from "../server";
+import { server } from "../backend/server";
 
 import { socketAuthMiddleware } from "./middlewares";
 
