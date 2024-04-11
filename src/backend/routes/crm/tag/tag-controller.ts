@@ -3,14 +3,14 @@ import { checkSchema, query } from "express-validator";
 
 import { getTags, createTag, updateTag, deleteTag } from "./routes";
 
-import { PossibleRole } from "../../../../database/models";
-
 import {
     routeHandlerMiddleware,
     permissionMiddleware,
     authMiddleware,
     validationMiddleware,
 } from "../../../middlewares";
+
+import { PossibleRole } from "../../../../common";
 
 export const tagController = Router();
 

@@ -8,14 +8,14 @@ import {
     deletePurpose,
 } from "./routes";
 
-import { PossibleRole } from "../../../../database/models";
-
 import {
     routeHandlerMiddleware,
     permissionMiddleware,
     authMiddleware,
     validationMiddleware,
 } from "../../../middlewares";
+
+import { PossibleRole } from "../../../../common";
 
 export const purposeController = Router();
 

@@ -1,5 +1,3 @@
 node_modules
 dist
-product_images
-.vscode
 .env

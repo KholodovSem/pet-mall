@@ -2,10 +2,7 @@ import { DataTypes, Model, Optional } from "sequelize";
 
 import { sequelize } from "../";
 
-export enum PossibleRole {
-    ADMIN = "admin",
-    MANAGER = "manager",
-}
+import { PossibleRole } from "../../common";
 
 type RoleAttributes = {
     id: number;

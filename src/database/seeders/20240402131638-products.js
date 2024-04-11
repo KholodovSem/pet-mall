@@ -30,7 +30,7 @@ module.exports = {
 
             products.push({
                 name: faker.commerce.product(),
-                price: faker.number.int({ min: 1, max: 1000 }),
+                price: faker.number.int({ min: 1, max: 5 }),
                 quantity: faker.number.int({ min: 1, max: 10 }),
                 image: faker.image.url(),
                 manufacturer_id: manufacturerIds[manufacturerIndex].id,

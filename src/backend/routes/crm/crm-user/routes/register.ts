@@ -2,13 +2,9 @@ import { Handler } from "express";
 import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 
-import {
-    CRMUser,
-    PossibleRole,
-    Role,
-    UserRole,
-} from "../../../../../database/models";
+import { CRMUser, Role, UserRole } from "../../../../../database/models";
 import { BadRequestError } from "../../../../utils";
+import { PossibleRole } from "../../../../../common";
 
 export const register: Handler = async (req, res) => {
     const { email, password } = req.body;
@@ -20,7 +16,6 @@ export const register: Handler = async (req, res) => {
             },
         },
     });
-
 
     if (isCrmUserExist) {
         throw new BadRequestError(`User with email: ${email} already exist`);

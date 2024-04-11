@@ -8,7 +8,9 @@ import {
     validationMiddleware,
     routeHandlerMiddleware,
 } from "../../../middlewares";
-import { OrderStatus, PossibleRole } from "../../../../database/models";
+import { OrderStatus } from "../../../../database/models";
+
+import { PossibleRole } from "../../../../common";
 
 export const crmOrderController = Router();
 

@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 
-import { CRMUser, PossibleRole, Role } from "../../database/models";
+import { CRMUser, Role } from "../../database/models";
 
 import { UnauthorizedError } from "../utils";
+
+import { PossibleRole } from "../../common";
 
 export const permissionMiddleware = (...allowedRoles: PossibleRole[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {

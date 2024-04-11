@@ -1,6 +1,6 @@
 {
-    "watch": ["./src"],
+    "watch": ["./src", "./solana-price"],
     "ext": "ts,json",
-    "ignore": ["src/**/*.spec.ts"],
-    "exec": "ts-node ./src/index.ts"
+    "ignore": ["./src/**/*.spec.ts", "./solana-price/**/*.spec.ts"],
+    "exec": "concurrently \"ts-node ./src/index.ts\" \"ts-node ./solana-price/src/index.ts\" "
 }

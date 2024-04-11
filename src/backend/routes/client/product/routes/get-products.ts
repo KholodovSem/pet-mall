@@ -1,7 +1,6 @@
 import { type Handler } from "express";
 import { Op, WhereOptions } from "sequelize";
-import { sha1 } from "object-hash";
-import { redis, TTL } from "../../../../../redis";
+import { redis, RedisKeys, TTL } from "../../../../../redis";
 
 import {
     Product,
@@ -12,6 +11,7 @@ import {
     Manufacturer,
     Purpose,
 } from "../../../../../database/models";
+import { requestToKey } from "../../../../utils";
 
 export const getProducts: Handler = async (req, res) => {
     console.log(req.originalUrl, req.query);
@@ -65,11 +65,20 @@ export const getProducts: Handler = async (req, res) => {
         offset: offset,
     });
 
-    await redis.setex(
-        `${req.path}@${sha1(req.query)}`,
-        TTL,
-        JSON.stringify(products)
+    let solanaPrice: number = 1;
+
+    const redisSolanaPrice = await redis.get(RedisKeys.SOLANA_PRICE);
+
+    if (redisSolanaPrice) {
+        solanaPrice = parseFloat(redisSolanaPrice);
+    }
+
+    const modifiedProducts = products.map((product) =>
+        product.set({ price: product.price * solanaPrice })
     );
 
-    return res.json(products);
+    const requestKey = requestToKey(req);
+    await redis.setex(requestKey, TTL, JSON.stringify(modifiedProducts));
+
+    return res.json(modifiedProducts);
 };

@@ -9,7 +9,8 @@ import {
     uploadMiddleware,
     validationMiddleware,
 } from "../../../middlewares";
-import { PossibleRole } from "../../../../database/models";
+
+import { PossibleRole } from "../../../../common";
 
 export const crmProductsController = Router();
 
