@@ -12,16 +12,20 @@ import { changeOrderTask } from "./scheduler";
 import { config } from "./config";
 
 import { container } from "./ioc/inversify.config";
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { ConfigService, ConfigType } from "@nestjs/config";
+
+import appConfig from "./config/app/app.config";
+import { AuthGuard } from "./common/guards/auth.guard";
+import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
 
 const notificationService =
     container.get<NotificationService>(NotificationService);
 
 const PORT = config.port;
 
-//TODO: Websocket (test (codesandbox))
-//TODO: Microservice
-//TODO: Nest.js
-//TODO: As for the cascade when the tag is removed
+//TODO: Read about swagger
 //TODO: Logger
 //TODO: How to share root files (kind of configs) between projects?
 
@@ -36,9 +40,26 @@ const init = async () => {
     handleSolanaPrice();
 };
 
-init();
+// init();
 
-process.on("SIGINT", async () => {
-    await consumer.disconnect();
-    process.exit(0);
-});
+// process.on("SIGINT", async () => {
+//     await consumer.disconnect();
+//     process.exit(0);
+// });
+
+const bootstrap = async () => {
+    const app = await NestFactory.create(AppModule);
+
+    const validationPipe = new ValidationPipe({
+        whitelist: true,
+        transform: true,
+    });
+    app.useGlobalPipes(validationPipe);
+
+    const configService = app.get(ConfigService);
+    const port = configService.get("app.port");
+
+    app.listen(port);
+};
+
+bootstrap();

@@ -12,10 +12,10 @@ ws.on("open", () => {
 ws.on("message", async (data) => {
     const lastPrice = JSON.parse(data.toString()).c;
 
-    console.log(
-        `Last price: ${lastPrice}
-        `
-    );
+    // console.log(
+    //     `Last price: ${lastPrice}
+    //     `
+    // );
 
     handleSolanaPrice(lastPrice);
 });

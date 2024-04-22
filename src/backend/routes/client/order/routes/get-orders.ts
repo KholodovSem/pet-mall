@@ -6,11 +6,11 @@ import { Order, Product } from "../../../../../database/models";
 export const getOrders: Handler = async (req, res) => {
     const orders = await Order.findAll({
         include: {
-            model: Product
+            model: Product,
         },
         where: {
             user_id: {
-                [Op.eq]: req.userId,
+                [Op.eq]: req.user?.id,
             },
         },
     });

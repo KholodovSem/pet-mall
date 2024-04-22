@@ -10,7 +10,7 @@ import {
 } from "../../../middlewares";
 import { OrderStatus } from "../../../../database/models";
 
-import { PossibleRole } from "../../../../common";
+import { PossibleRole } from "../../../../common/constants";
 
 export const crmOrderController = Router();
 

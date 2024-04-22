@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from "sequelize";
 
 import { sequelize } from "../";
 
-import { PossibleRole } from "../../common";
+import { PossibleRole } from "../../common/constants";
 
 type RoleAttributes = {
     id: number;

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import { CRMUser, Role, UserRole } from "../../../../../database/models";
 import { BadRequestError } from "../../../../utils";
-import { PossibleRole } from "../../../../../common";
+import { PossibleRole } from "../../../../../common/constants";
 
 export const register: Handler = async (req, res) => {
     const { email, password } = req.body;

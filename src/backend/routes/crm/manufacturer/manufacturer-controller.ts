@@ -15,7 +15,7 @@ import {
     validationMiddleware,
 } from "../../../middlewares";
 
-import { PossibleRole } from "../../../../common";
+import { PossibleRole } from "../../../../common/constants";
 
 export const manufacturerController = Router();
 

@@ -21,7 +21,7 @@ export const authMiddleware: Handler = (req, _, next) => {
             config.jwtSecret
         ) as JwtPayload & { userId: number };
 
-        req.userId = decodedToken.userId;
+        req.user = decodedToken.user;
 
         next();
     } catch (error) {

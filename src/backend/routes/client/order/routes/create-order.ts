@@ -19,7 +19,7 @@ export const createOrder: Handler = async (req, res) => {
 
     const user = await User.findOne({
         where: {
-            id: req.userId,
+            id: req.user?.id,
         },
     });
 

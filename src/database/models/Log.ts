@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { PossibleRole, Action, Resource } from "../../common";
+import { PossibleRole, Action, Resource } from "../../common/constants";
 
 interface ILog {
     userId: number;

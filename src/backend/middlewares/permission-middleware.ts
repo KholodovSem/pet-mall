@@ -4,12 +4,12 @@ import { CRMUser, Role } from "../../database/models";
 
 import { UnauthorizedError } from "../utils";
 
-import { PossibleRole } from "../../common";
+import { PossibleRole } from "../../common/constants";
 
 export const permissionMiddleware = (...allowedRoles: PossibleRole[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const userId = req.userId;
+            const userId = req.user?.id;
 
             const user = await CRMUser.findByPk(userId, { include: Role });
 
