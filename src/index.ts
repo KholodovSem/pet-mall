@@ -3,7 +3,6 @@ import "reflect-metadata";
 import { server } from "./backend/server";
 import { connectDatabase } from "./database";
 import { redis } from "./redis";
-import { consumer } from "./kafka";
 import { handleSolanaPrice } from "./kafka/handlers";
 import { connectSftp } from "./sftp";
 import { NotificationService } from "./socket/services";
@@ -39,13 +38,6 @@ const init = async () => {
     changeOrderTask.start();
     handleSolanaPrice();
 };
-
-// init();
-
-// process.on("SIGINT", async () => {
-//     await consumer.disconnect();
-//     process.exit(0);
-// });
 
 const bootstrap = async () => {
     const app = await NestFactory.create(AppModule);

@@ -16,3 +16,8 @@ export enum Resource {
     TAG = "tag",
     USER = "user",
 }
+
+export enum PassportLocalStrategy {
+    CLIENT = "client",
+    CRM = "crm",
+}

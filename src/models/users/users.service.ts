@@ -1,14 +1,9 @@
-import {
-    BadRequestException,
-    Injectable,
-    NotFoundException,
-} from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import * as bcrypt from "bcrypt";
 
 import { User } from "./entities/user.entity";
-import { LoginUserDto } from "../../common/dtos/login-user.dto";
+import { RegisterUserDto } from "../../common/dtos/register-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -17,7 +12,7 @@ export class UsersService {
         private readonly usersRepository: Repository<User>
     ) {}
 
-    async findOne({ email, password }: LoginUserDto) {
+    async findOne(email: string) {
         const user = await this.usersRepository.findOne({
             where: { email },
         });
@@ -26,16 +21,12 @@ export class UsersService {
             throw new NotFoundException(`User with email: ${email} not found`);
         }
 
-        const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordMatch) {
-            throw new BadRequestException("Invalid email address or password");
-        }
-
-        return { token: "" };
+        return user;
     }
 
-    async create() {
-        const payload = { id: "", roles: [""] };
+    async create(credentials: RegisterUserDto) {
+        const user = this.usersRepository.create(credentials);
+        await this.usersRepository.save(user);
+        return user;
     }
 }

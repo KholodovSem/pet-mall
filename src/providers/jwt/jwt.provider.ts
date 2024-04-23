@@ -10,6 +10,7 @@ import { JwtModule } from "@nestjs/jwt";
             useFactory(configService: ConfigService) {
                 return {
                     secret: configService.get("jwt.secret"),
+                    global: true,
                 };
             },
         }),
