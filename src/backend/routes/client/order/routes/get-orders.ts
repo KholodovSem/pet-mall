@@ -10,7 +10,7 @@ export const getOrders: Handler = async (req, res) => {
         },
         where: {
             user_id: {
-                [Op.eq]: req.user?.id,
+                [Op.eq]: req.user as string,
             },
         },
     });

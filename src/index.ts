@@ -13,14 +13,11 @@ import { config } from "./config";
 import { container } from "./ioc/inversify.config";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { ConfigService, ConfigType } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 
-import appConfig from "./config/app/app.config";
-import { AuthGuard } from "./common/guards/auth.guard";
-import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
 
-const notificationService =
-    container.get<NotificationService>(NotificationService);
+const notificationService = container.get<NotificationService>(NotificationService);
 
 const PORT = config.port;
 

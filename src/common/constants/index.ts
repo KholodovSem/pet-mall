@@ -17,7 +17,9 @@ export enum Resource {
     USER = "user",
 }
 
-export enum PassportLocalStrategy {
-    CLIENT = "client",
-    CRM = "crm",
+export enum PassportStrategyType {
+    CLIENT_LOCAL = "client-local",
+    CRM_LOCAL = "crm-local",
+    CLIENT_JWT = "client-jwt",
+    CRM_JWT = "crm-jwt",
 }

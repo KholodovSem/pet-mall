@@ -1,13 +1,7 @@
 import { type Handler } from "express";
 import { Op } from "sequelize";
 
-import {
-    User,
-    OrderProduct,
-    Order,
-    OrderStatus,
-    Product,
-} from "../../../../../database/models";
+import { User, OrderProduct, Order, OrderStatus, Product } from "../../../../../database/models";
 
 import { NotFoundError, ValidationError } from "../../../../utils";
 
@@ -19,7 +13,7 @@ export const createOrder: Handler = async (req, res) => {
 
     const user = await User.findOne({
         where: {
-            id: req.user?.id,
+            id: req.user as string,
         },
     });
 
@@ -50,20 +44,14 @@ export const createOrder: Handler = async (req, res) => {
         const isProductExist = databaseProductsMap[product.productId];
 
         if (!isProductExist) {
-            productsErrors.push(
-                `Product with id:${product.productId} doesn't exist`
-            );
+            productsErrors.push(`Product with id:${product.productId} doesn't exist`);
             continue;
         }
 
-        const isEnough =
-            product.quantity <=
-            databaseProductsMap[product.productId]?.quantity;
+        const isEnough = product.quantity <= databaseProductsMap[product.productId]?.quantity;
 
         if (!isEnough) {
-            productsErrors.push(
-                `Product with id:${product.productId} is not available in the right quantity`
-            );
+            productsErrors.push(`Product with id:${product.productId} is not available in the right quantity`);
         }
     }
 
@@ -84,8 +72,7 @@ export const createOrder: Handler = async (req, res) => {
     );
 
     const updatedProducts = products.map((product) => {
-        const quantity =
-            databaseProductsMap[product.productId].quantity - product.quantity;
+        const quantity = databaseProductsMap[product.productId].quantity - product.quantity;
 
         return Product.update(
             { quantity },

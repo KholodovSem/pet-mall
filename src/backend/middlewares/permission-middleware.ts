@@ -9,7 +9,7 @@ import { PossibleRole } from "../../common/constants";
 export const permissionMiddleware = (...allowedRoles: PossibleRole[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const userId = req.user?.id;
+            const userId = req.user as string;
 
             const user = await CRMUser.findByPk(userId, { include: Role });
 
@@ -18,9 +18,7 @@ export const permissionMiddleware = (...allowedRoles: PossibleRole[]) => {
             }
 
             const isUserHasPermission = user?.roles.some(
-                (role) =>
-                    role.name === PossibleRole.ADMIN ||
-                    allowedRoles.includes(role.name)
+                (role) => role.name === PossibleRole.ADMIN || allowedRoles.includes(role.name)
             );
 
             if (!isUserHasPermission) {
